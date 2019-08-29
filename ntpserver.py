@@ -20,7 +20,8 @@ def system_to_ntp_time(timestamp):
     # Returns:
     # corresponding NTP time
     # #"""
-    espOffset = 940784212  # diff between normal time.gmtime() (on windows for example) and esp time.time() (assuming the rtc is set)
+    espOffset = 946702800 - (5 * 60 * 60) # subtract 5hrs (confirmed this makes RTC match UTC+0 on ESP8266)
+    # Your hardware may vary
     return timestamp + NTP.NTP_DELTA + espOffset  #
 
 
@@ -300,9 +301,9 @@ class WorkThread:
             sendPacket.recv_timestamp = recvTimestamp
             sendPacket.tx_timestamp = system_to_ntp_time(time.time())
             thisSocket.sendto(sendPacket.to_data(), addr)
-            print("Sended to %s:%d" % (addr[0], addr[1]))
-        except Exception as e:
-            print('290 Exception:', e)
+            print("Sent to %s:%d" % (addr[0], addr[1]))
+        except Exception as e304:
+            print('290 Exception:', e304)
 
 
 listenIp = "0.0.0.0"
